@@ -1,0 +1,25 @@
+{
+  "name": "jdrbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Automatycs/JDRBOT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Automatycs/JDRBOT/issues"
+  },
+  "homepage": "https://github.com/Automatycs/JDRBOT#readme",
+  "dependencies": {
+    "discord.js": "^14.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0"
+  }
+}
