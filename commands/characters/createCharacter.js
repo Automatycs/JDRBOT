@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
+const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, Events } = require('discord.js');
+const { client } = require('../../index.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -40,3 +41,28 @@ module.exports = {
 		await interaction.showModal(modal);
 	},
 };
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isModalSubmit()) return;
+
+
+	if (interaction.customId === 'characterModal') {
+		const charName = interaction.fields.getTextInputValue('nameInput');
+		const charStory = interaction.fields.getTextInputValue('storyInput');
+		const charPicture = interaction.fields.getTextInputValue('pictureInput');
+
+		try {
+			await interaction.client.DBCharacters.create({
+				name: charName,
+				story: charStory,
+				picture: charPicture,
+				user_id: interaction.user.id,
+			});
+		}
+		catch {
+			return interaction.reply('Il y a eu un problème pendant la création du personnage');
+		}
+
+		await interaction.reply({ content: 'La première étape de la création de ton personnage est terminée!' });
+	}
+});
