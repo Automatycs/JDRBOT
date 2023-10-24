@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/Automatycs/JDRBOT#readme",
   "dependencies": {
-    "discord.js": "^14.13.0"
+    "discord.js": "^14.13.0",
+    "mysql2": "^3.6.2",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "eslint": "^8.52.0"
