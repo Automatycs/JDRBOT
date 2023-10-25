@@ -3,7 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
-const { DBUsers, DBSpecies, DBCharacters } = require('./database.js');
+const { DBUsers, DBSpecies, DBCharacters } = require('./database/createDatabase.js');
+const { fillSpecies } = require('./database/addSpecies');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -67,6 +68,7 @@ client.once(Events.ClientReady, c => {
 	DBUsers.sync();
 	DBCharacters.sync();
 	DBSpecies.sync();
+	fillSpecies();
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 

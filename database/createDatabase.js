@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { dbname, dbuser, dbpassword, dbhost, dbport } = require('./config.json');
+const { dbname, dbuser, dbpassword, dbhost, dbport } = require('../config.json');
 
 const sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 	host: dbhost,

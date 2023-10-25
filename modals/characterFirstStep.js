@@ -1,0 +1,35 @@
+const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
+
+const characterFirstStepModal = new ModalBuilder()
+	.setCustomId('characterFirstStep')
+	.setTitle('Première étape');
+
+const nameInput = new TextInputBuilder()
+	.setCustomId('nameInput')
+	.setLabel('Le nom de ton personnage:')
+	.setStyle(TextInputStyle.Short)
+	.setMaxLength(50);
+
+const storyInput = new TextInputBuilder()
+	.setCustomId('storyInput')
+	.setLabel('L\'histoire (brève) de ton personnage:')
+	.setStyle(TextInputStyle.Paragraph)
+	.setRequired(false)
+	.setMaxLength(4000)
+	.setPlaceholder('Lorem Ispum ....');
+
+const pictureInput = new TextInputBuilder()
+	.setCustomId('pictureInput')
+	.setLabel('L\'URL de l\'image de ton personnage:')
+	.setStyle(TextInputStyle.Short)
+	.setRequired(false)
+	.setMaxLength(500)
+	.setPlaceholder('https://.....');
+
+const firstActionRow = new ActionRowBuilder().addComponents(nameInput);
+const secondActionRow = new ActionRowBuilder().addComponents(storyInput);
+const thirdActionRow = new ActionRowBuilder().addComponents(pictureInput);
+
+characterFirstStepModal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
+
+module.exports = { characterFirstStepModal };
