@@ -41,6 +41,13 @@ for (const folder of commandFolders) {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
+	const user = await interaction.client.DBUsers.findOne({ where: { discord_id: interaction.user.id } });
+
+	if (!user && interaction.commandName != 'register') {
+		await interaction.reply({ content: 'T\' est pas enregistré fréros', ephemeral: true });
+		return;
+	}
+
 	const command = interaction.client.commands.get(interaction.commandName);
 
 	if (!command) {
@@ -65,9 +72,9 @@ client.on(Events.InteractionCreate, async interaction => {
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
-	DBUsers.sync();
-	DBCharacters.sync();
-	DBSpecies.sync();
+	DBUsers.sync({ alter: true });
+	DBCharacters.sync({ alter: true });
+	DBSpecies.sync({ alter: true });
 	fillSpecies();
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });

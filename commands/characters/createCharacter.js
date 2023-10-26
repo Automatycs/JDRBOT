@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, Events } = require('discord.js');
 const { client } = require('../../index.js');
 const { characterFirstStepModal } = require('../../modals/characterFirstStep.js');
+const { DBUsers } = require('../../database/createDatabase.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -21,12 +22,14 @@ client.on(Events.InteractionCreate, async interaction => {
 		const charPicture = interaction.fields.getTextInputValue('pictureInput');
 
 		try {
-			await interaction.client.DBCharacters.create({
+			const char = await interaction.client.DBCharacters.create({
 				name: charName,
 				story: charStory,
 				picture: charPicture,
 				user_id: interaction.user.id,
 			});
+
+			await DBUsers.update({ current_character: char.id }, { where: { discord_id: interaction.user.id } });
 		}
 		catch {
 			return interaction.reply('Il y a eu un problème pendant la création du personnage');

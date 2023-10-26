@@ -15,7 +15,7 @@ const storyInput = new TextInputBuilder()
 	.setLabel('L\'histoire (brève) de ton personnage:')
 	.setStyle(TextInputStyle.Paragraph)
 	.setRequired(false)
-	.setMaxLength(4000)
+	.setMaxLength(1000)
 	.setPlaceholder('Lorem Ispum ....');
 
 const pictureInput = new TextInputBuilder()

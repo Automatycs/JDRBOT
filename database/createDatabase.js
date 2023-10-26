@@ -27,6 +27,10 @@ const Users = sequelize.define('users', {
 		type: Sequelize.STRING,
 		allowNull: false,
 	},
+	avatar: {
+		type: Sequelize.STRING,
+		allowNull: false,
+	},
 	current_character: {
 		type: Sequelize.BIGINT,
 		allowNull: true,
@@ -81,7 +85,7 @@ const Characters = sequelize.define('characters', {
 		allowNull: false,
 	},
 	story: {
-		type: Sequelize.STRING(4000),
+		type: Sequelize.STRING(1000),
 		allowNull: true,
 	},
 	picture: {
