@@ -88,6 +88,10 @@ const Characters = sequelize.define('characters', {
 		type: Sequelize.STRING(1000),
 		allowNull: true,
 	},
+	traits: {
+		type: Sequelize.STRING(1000),
+		allowNull: true,
+	},
 	picture: {
 		type: Sequelize.STRING(500),
 		allowNull: true,

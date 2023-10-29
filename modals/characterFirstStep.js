@@ -18,6 +18,13 @@ const storyInput = new TextInputBuilder()
 	.setMaxLength(1000)
 	.setPlaceholder('Lorem Ispum ....');
 
+const traitsInput = new TextInputBuilder()
+	.setCustomId('traitsInput')
+	.setLabel('Anectodes et traits de ton personnage:')
+	.setStyle(TextInputStyle.Paragraph)
+	.setRequired(false)
+	.setMaxLength(1000);
+
 const pictureInput = new TextInputBuilder()
 	.setCustomId('pictureInput')
 	.setLabel('L\'URL de l\'image de ton personnage:')
@@ -28,8 +35,9 @@ const pictureInput = new TextInputBuilder()
 
 const firstActionRow = new ActionRowBuilder().addComponents(nameInput);
 const secondActionRow = new ActionRowBuilder().addComponents(storyInput);
-const thirdActionRow = new ActionRowBuilder().addComponents(pictureInput);
+const thirdActionRow = new ActionRowBuilder().addComponents(traitsInput);
+const fourthActionRow = new ActionRowBuilder().addComponents(pictureInput);
 
-characterFirstStepModal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
+characterFirstStepModal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow);
 
 module.exports = { characterFirstStepModal };

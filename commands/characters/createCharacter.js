@@ -20,12 +20,14 @@ client.on(Events.InteractionCreate, async interaction => {
 		const charName = interaction.fields.getTextInputValue('nameInput');
 		const charStory = interaction.fields.getTextInputValue('storyInput');
 		const charPicture = interaction.fields.getTextInputValue('pictureInput');
+		const charTraits = interaction.fields.getTextInputValue('traitsInput');
 
 		try {
 			const char = await interaction.client.DBCharacters.create({
 				name: charName,
 				story: charStory,
 				picture: charPicture,
+				traits: charTraits,
 				user_id: interaction.user.id,
 			});
 
