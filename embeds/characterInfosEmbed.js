@@ -10,7 +10,6 @@ async function createCharacterInfosEmbed(character, user) {
 			{ name: 'Histoire', value: character.story },
 			{ name: 'Traits / Anecdotes', value: character.traits },
 		)
-		.addFields({ name: 'Image', value: character.picture })
 		.setImage(character.picture)
 		.setTimestamp();
 
