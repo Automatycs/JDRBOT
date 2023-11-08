@@ -15,7 +15,6 @@ module.exports = {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isModalSubmit()) return;
 
-
 	if (interaction.customId === 'characterFirstStep') {
 		const charName = interaction.fields.getTextInputValue('nameInput');
 		const charStory = interaction.fields.getTextInputValue('storyInput');

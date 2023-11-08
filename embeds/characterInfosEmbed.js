@@ -5,13 +5,18 @@ async function createCharacterInfosEmbed(character, user) {
 	const characterInfosEmbed = new EmbedBuilder()
 		.setColor(0x9e0e40)
 		.setAuthor({ name: user.name, iconURL: avatarURL })
-		.addFields(
-			{ name: 'Nom', value: character.name },
-			{ name: 'Histoire', value: character.story },
-			{ name: 'Traits / Anecdotes', value: character.traits },
-		)
-		.setImage(character.picture)
-		.setTimestamp();
+		.addFields({ name: 'Nom', value: character.name });
+
+	if (character.story != null && character.story != '') {
+		characterInfosEmbed.addFields({ name: 'Histoire', value: character.story });
+	}
+	if (character.traits != null && character.traits != '') {
+		characterInfosEmbed.addFields({ name: 'Traits / Anecdotes', value: character.traits });
+	}
+	if (character.picture != null && character.picture != '') {
+		characterInfosEmbed.setImage(character.picture);
+	}
+	characterInfosEmbed.setTimestamp();
 
 	return (characterInfosEmbed);
 }
