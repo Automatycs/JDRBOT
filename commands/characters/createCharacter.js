@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, Events } = require('discord.js');
 const { client } = require('../../index.js');
 const { characterFirstStepModal } = require('../../modals/characterFirstStep.js');
-const { DBUsers } = require('../../database/createDatabase.js');
+const { DBUsers, DBCharacters } = require('../../database/createDatabase.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,14 +15,14 @@ module.exports = {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isModalSubmit()) return;
 
-	if (interaction.customId === 'characterFirstStep') {
+	if (interaction.customId === 'characterFirstStepModal') {
 		const charName = interaction.fields.getTextInputValue('nameInput');
 		const charStory = interaction.fields.getTextInputValue('storyInput');
 		const charPicture = interaction.fields.getTextInputValue('pictureInput');
 		const charTraits = interaction.fields.getTextInputValue('traitsInput');
 
 		try {
-			const char = await interaction.client.DBCharacters.create({
+			const char = await DBCharacters.create({
 				name: charName,
 				story: charStory,
 				picture: charPicture,

@@ -1,7 +1,7 @@
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
 const characterUpdateNameModal = new ModalBuilder()
-	.setCustomId('characterUpdateName')
+	.setCustomId('characterUpdateNameModal')
 	.setTitle('Changement de nom');
 
 const newNameInput = new TextInputBuilder()

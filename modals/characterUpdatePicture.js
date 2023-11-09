@@ -1,7 +1,7 @@
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
 const characterUpdatePictureModal = new ModalBuilder()
-	.setCustomId('characterUpdatePicture')
+	.setCustomId('characterUpdatePictureModal')
 	.setTitle('Changement d\'image');
 
 const newPictureInput = new TextInputBuilder()

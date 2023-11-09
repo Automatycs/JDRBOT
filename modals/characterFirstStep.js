@@ -1,7 +1,7 @@
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
 const characterFirstStepModal = new ModalBuilder()
-	.setCustomId('characterFirstStep')
+	.setCustomId('characterFirstStepModal')
 	.setTitle('Première étape');
 
 const nameInput = new TextInputBuilder()

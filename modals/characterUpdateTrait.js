@@ -1,7 +1,7 @@
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
 const characterUpdateStoryModal = new ModalBuilder()
-	.setCustomId('characterUpdateStoryModal')
+	.setCustomId('characterUpdateTraitModal')
 	.setTitle('Changement d\'histoire');
 
 const newStoryInput = new TextInputBuilder()
