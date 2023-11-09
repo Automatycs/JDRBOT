@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { DBUsers } = require('../../database/createDatabase');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
 		const userAvatar = interaction.user.avatar;
 
 		try {
-			await interaction.client.DBUsers.create({
+			await DBUsers.create({
 				discord_id: userDiscordId,
 				name: userName,
 				avatar: userAvatar,

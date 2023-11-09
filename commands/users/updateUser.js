@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { DBUsers } = require('../../database/createDatabase.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -9,7 +10,7 @@ module.exports = {
 		const userDiscordId = interaction.user.id;
 		const userAvatar = interaction.user.avatar;
 
-		const affected = await interaction.client.DBUsers.update(
+		const affected = await DBUsers.update(
 			{ name: userName, avatar: userAvatar },
 			{ where: { discord_id: userDiscordId } });
 

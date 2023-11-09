@@ -1,8 +1,9 @@
 const { DBSpecies } = require('./createDatabase.js');
 
-function fillSpecies() {
-	const speciesList = DBSpecies.findAll();
-	if (!speciesList) {
+async function fillSpecies() {
+	const speciesList = await DBSpecies.findAll();
+
+	if (speciesList.length == 0) {
 		try {
 			DBSpecies.bulkCreate([
 				{ name: 'Humains', mod_phy: 0, mod_dex: 1, mod_eso: -1, mod_int: 1, mod_cha: 0, mod_sur: -1 },

@@ -10,10 +10,6 @@ const { fillSpecies } = require('./database/addSpecies');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 module.exports = { client: client };
 
-client.DBUsers = DBUsers;
-client.DBSpecies = DBSpecies;
-client.DBCharacters = DBCharacters;
-
 /*
 	Récolte des commandes
 */
@@ -41,7 +37,7 @@ for (const folder of commandFolders) {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-	const user = await interaction.client.DBUsers.findOne({ where: { discord_id: interaction.user.id } });
+	const user = await DBUsers.findOne({ where: { discord_id: interaction.user.id } });
 
 	if (!user && interaction.commandName != 'register') {
 		await interaction.reply({ content: 'T\' est pas enregistré fréros', ephemeral: true });
@@ -72,9 +68,9 @@ client.on(Events.InteractionCreate, async interaction => {
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
-	DBUsers.sync({ alter: true });
-	DBCharacters.sync({ alter: true });
-	DBSpecies.sync({ alter: true });
+	DBUsers.sync();
+	DBSpecies.sync();
+	DBCharacters.sync();
 	fillSpecies();
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });

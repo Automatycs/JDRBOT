@@ -31,9 +31,8 @@ module.exports = {
 		row.addComponents(select);
 
 		await interaction.reply({
-			content: 'Choisis un personnage!',
+			content: 'Je regarde:',
 			components: [row],
-			test: interaction,
 		});
 	},
 };
@@ -41,13 +40,13 @@ module.exports = {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isStringSelectMenu()) return;
 
-	console.log(interaction);
 	if (interaction.customId === 'checkCharSelect') {
 		const char = await DBCharacters.findOne({ where: { id: interaction.values[0] } });
 		const embeds = await createCharacterEmbeds(char);
-		const pagination = new Pagination(interaction.test);
+		const pagination = new Pagination(interaction);
 
 		await pagination.setEmbeds(embeds);
-		await pagination.render();
+
+		await pagination.update();
 	}
 });
