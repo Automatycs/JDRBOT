@@ -10,6 +10,10 @@ const { fillSpecies } = require('./database/addSpecies');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 module.exports = { client: client };
 
+require('./events/chatInputEvents');
+require('./events/modalEvents');
+require('./events/selectEvents');
+
 /*
 	Récolte des commandes
 */
@@ -35,37 +39,6 @@ async function create_commands() {
 		}
 	}
 }
-
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;
-
-	const user = await DBUsers.findOne({ where: { discord_id: interaction.user.id } });
-
-	if (!user && interaction.commandName != 'register') {
-		await interaction.reply({ content: 'T\' est pas enregistré fréros', ephemeral: true });
-		return;
-	}
-
-	const command = interaction.client.commands.get(interaction.commandName);
-
-	if (!command) {
-		console.error('No command matching $(interraction.commandName) was found.');
-		return;
-	}
-
-	try {
-		await command.execute(interaction);
-	}
-	catch (error) {
-		console.log(error);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral:true });
-		}
-		else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-		}
-	}
-});
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'

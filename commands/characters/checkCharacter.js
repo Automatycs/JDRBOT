@@ -1,52 +1,28 @@
-const { SlashCommandBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, Events } = require('discord.js');
+// Imports de composants
+const { SlashCommandBuilder } = require('discord.js');
 const { DBUsers, DBCharacters } = require('../../database/createDatabase.js');
-const { createCharacterEmbeds } = require('../../embeds/createCharacterEmbed.js');
-const { Pagination } = require('pagination.djs');
-const { client } = require('../../index.js');
+const { buildCheckCharacterSelect } = require('../../selects/checkCharSelect.js');
 
-
+// Exports de composants
 module.exports = {
+	// data: nom et description de la commande
 	data: new SlashCommandBuilder()
 		.setName('check')
 		.setDescription('Regarde la fiche d\'un personnage'),
+	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
+		// Récupération de tout les Users et Characters
 		const users = await DBUsers.findAll();
 		const chars = await DBCharacters.findAll();
-		const select = new StringSelectMenuBuilder()
-			.setCustomId('checkCharSelect')
-			.setPlaceholder('Choisis un personnage!');
-		const row = new ActionRowBuilder();
 
-		for (const char of chars) {
-			for (const user of users) {
-				if (char.user_id == user.discord_id) {
-					select.addOptions(new StringSelectMenuOptionBuilder()
-						.setLabel(char.name)
-						.setDescription(user.name)
-						.setValue(char.id.toString()),
-					);
-				}
-			}
-		}
-		row.addComponents(select);
+		// Création d'un SelectMenu avec les informations données
+		const select = await buildCheckCharacterSelect(users, chars);
 
+		// Envoi du message contenant le SelectMenu
 		await interaction.reply({
 			content: 'Je regarde:',
-			components: [row],
+			components: [select],
+			ephemeral: true,
 		});
 	},
 };
-
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isStringSelectMenu()) return;
-
-	if (interaction.customId === 'checkCharSelect') {
-		const char = await DBCharacters.findOne({ where: { id: interaction.values[0] } });
-		const embeds = await createCharacterEmbeds(char);
-		const pagination = new Pagination(interaction);
-
-		await pagination.setEmbeds(embeds);
-
-		await pagination.update();
-	}
-});

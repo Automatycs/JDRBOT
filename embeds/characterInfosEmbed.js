@@ -1,5 +1,16 @@
 const { EmbedBuilder } = require('discord.js');
 
+function checkURL(url) {
+	try {
+		new URL(url);
+	}
+	catch {
+		return (false);
+	}
+
+	return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+
 async function createCharacterInfosEmbed(character, user) {
 	const avatarURL = 'https://cdn.discordapp.com/avatars/' + user.discord_id + '/' + user.avatar + '.png';
 	const characterInfosEmbed = new EmbedBuilder()
@@ -13,7 +24,7 @@ async function createCharacterInfosEmbed(character, user) {
 	if (character.traits != null && character.traits != '') {
 		characterInfosEmbed.addFields({ name: 'Traits / Anecdotes', value: character.traits });
 	}
-	if (character.picture != null && character.picture != '') {
+	if (character.picture != null && character.picture != '' && await checkURL(character.picture)) {
 		characterInfosEmbed.setImage(character.picture);
 	}
 	characterInfosEmbed.setTimestamp();

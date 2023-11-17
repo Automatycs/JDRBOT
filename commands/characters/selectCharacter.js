@@ -1,47 +1,36 @@
-const { SlashCommandBuilder, StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder, Events } = require('discord.js');
+// Imports de composants
+const { SlashCommandBuilder } = require('discord.js');
 const { DBUsers, DBCharacters } = require('../../database/createDatabase.js');
-const { client } = require('../../index.js');
+const { buildSelectCharacterSelect } = require('../../selects/selectCharacterSelect.js');
 
+// Exports de composants
 module.exports = {
+	// data: nom et description de la commande
 	data: new SlashCommandBuilder()
 		.setName('select')
 		.setDescription('Changer de personnage'),
+	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
-		const user = await DBUsers.findOne({ where: { discord_id: interaction.user.id } });
-		const chars = await DBCharacters.findAll({ where: { user_id: interaction.user.id } });
-		const select = new StringSelectMenuBuilder()
-			.setCustomId('selectCharSelect')
-			.setPlaceholder('Choisis un personnage:');
-		const row = new ActionRowBuilder();
+		// Récupération des informations sur l'utilisateur ayant appelé la commande
+		const userDiscordId = interaction.user.id;
 
-		for (const char of chars) {
-			if (char.user_id == user.discord_id) {
-				const tmp = new StringSelectMenuOptionBuilder()
-					.setLabel(char.name)
-					.setValue(char.id.toString());
-				if (char.id == user.current_character) {
-					tmp.setDescription('Actuel');
-				}
-				select.addOptions(tmp);
-			}
-		}
-		row.addComponents(select);
+		// Récupération d'un User et de ses Characters
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: userDiscordId },
+		});
+		const chars = await DBCharacters.findAll({
+			where:
+				{ user_id: userDiscordId },
+		});
 
+		// Création d'un SelectMenu avec les informations données
+		const select = await buildSelectCharacterSelect(chars, user);
+
+		// Envoi du message contenant le SelectMenu
 		await interaction.reply({
-			components: [row],
+			components: [select],
+			ephemeral: true,
 		});
 	},
 };
-
-client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isStringSelectMenu()) return;
-
-	if (interaction.customId === 'selectCharSelect') {
-		const char = await DBCharacters.findOne({ where: { id: interaction.values[0] } });
-		await DBUsers.update(
-			{ current_character: interaction.values[0] },
-			{ where: { discord_id: char.user_id } });
-
-		await interaction.update({ content: 'Changement de personnage effectué!', components: [] });
-	}
-});
