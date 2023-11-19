@@ -16,11 +16,11 @@ module.exports = {
 		const userAvatar = interaction.user.avatar;
 
 		// Vérification de si l'utilisateur éxiste déjà
-		const user = DBUsers.findAll({
+		const user = await DBUsers.findAll({
 			where:
 				{ discord_id: userDiscordId },
 		});
-		if (user) {
+		if (user.length != 0) {
 			await interaction.reply({
 				content: 'Vous êtes déjà inscrit',
 				ephemeral: true,

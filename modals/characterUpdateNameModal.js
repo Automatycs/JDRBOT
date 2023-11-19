@@ -1,18 +1,22 @@
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
-const characterUpdateNameModal = new ModalBuilder()
-	.setCustomId('characterUpdateNameModal')
-	.setTitle('Changement de nom');
+async function buildCharacterUpdateNameModal(prev) {
+	const modal = new ModalBuilder()
+		.setCustomId('characterUpdateNameModal')
+		.setTitle('Changement de nom');
 
-const newNameInput = new TextInputBuilder()
-	.setCustomId('newNameInput')
-	.setLabel('Nouveau nom:')
-	.setStyle(TextInputStyle.Short)
-	.setRequired(true)
-	.setMaxLength(50);
+	const newNameInput = new TextInputBuilder()
+		.setCustomId('newNameInput')
+		.setLabel('Nouveau nom:')
+		.setStyle(TextInputStyle.Short)
+		.setRequired(true)
+		.setMaxLength(50)
+		.setValue(prev);
 
-const firstActionRow = new ActionRowBuilder().addComponents(newNameInput);
+	const firstActionRow = new ActionRowBuilder().addComponents(newNameInput);
+	modal.addComponents(firstActionRow);
 
-characterUpdateNameModal.addComponents(firstActionRow);
+	return (modal);
+}
 
-module.exports = { characterUpdateNameModal };
+module.exports = { buildCharacterUpdateNameModal };

@@ -26,6 +26,101 @@ client.on(Events.InteractionCreate, async interaction => {
 			return interaction.reply('Il y a eu un problème pendant la création du personnage');
 		}
 
-		await interaction.reply({ content: 'La première étape de la création de ton personnage est terminée!' });
+		return await interaction.reply({
+			content: 'La première étape de la création de ton personnage est terminée!',
+			ephemeral: true,
+		});
+	}
+
+
+	if (interaction.customId === 'characterUpdateNameModal') {
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.user.id },
+		});
+		const newName = interaction.fields.getTextInputValue('newNameInput');
+
+		await DBCharacters.update(
+			{
+				name: newName,
+			},
+			{
+				where:
+					{ id: user.current_character },
+			},
+		);
+		return await interaction.reply({
+			content: 'Le nom de ton personnage a été mis à jour!',
+			ephemeral: true,
+		});
+	}
+
+
+	if (interaction.customId === 'characterUpdatePictureModal') {
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.user.id },
+		});
+		const newPicture = interaction.fields.getTextInputValue('newPictureInput');
+
+		await DBCharacters.update(
+			{
+				picture: newPicture,
+			},
+			{
+				where:
+					{ id: user.current_character },
+			},
+		);
+		return await interaction.reply({
+			content: 'L\'image  de ton personnage a été mise à jour!',
+			ephemeral: true,
+		});
+	}
+
+
+	if (interaction.customId === 'characterUpdateStoryModal') {
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.user.id },
+		});
+		const newStory = interaction.fields.getTextInputValue('newStoryInput');
+
+		await DBCharacters.update(
+			{
+				story: newStory,
+			},
+			{
+				where:
+					{ id: user.current_character },
+			},
+		);
+		return await interaction.reply({
+			content: 'L\'histoire de ton personnage a été mise à jour!',
+			ephemeral: true,
+		});
+	}
+
+
+	if (interaction.customId === 'characterUpdateTraitsModal') {
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.user.id },
+		});
+		const newTraits = interaction.fields.getTextInputValue('newTraitsInput');
+
+		await DBCharacters.update(
+			{
+				traits: newTraits,
+			},
+			{
+				where:
+					{ id: user.current_character },
+			},
+		);
+		return await interaction.reply({
+			content: 'Les traits de ton personnage ont été mis à jour!',
+			ephemeral: true,
+		});
 	}
 });

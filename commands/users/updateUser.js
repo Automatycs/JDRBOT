@@ -24,7 +24,8 @@ module.exports = {
 			{
 				where:
 				{ discord_id: userDiscordId },
-			});
+			},
+		);
 
 		// Si une ligne a été affectée
 		if (affected > 0) {

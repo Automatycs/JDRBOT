@@ -1,19 +1,23 @@
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
-const characterUpdatePictureModal = new ModalBuilder()
-	.setCustomId('characterUpdatePictureModal')
-	.setTitle('Changement d\'image');
+async function buildCharacterUpdatePictureModal(prev) {
+	const modal = new ModalBuilder()
+		.setCustomId('characterUpdatePictureModal')
+		.setTitle('Changement d\'image');
 
-const newPictureInput = new TextInputBuilder()
-	.setCustomId('newPictureInput')
-	.setLabel('Nouvelle URL:')
-	.setStyle(TextInputStyle.Short)
-	.setRequired(true)
-	.setMaxLength(500)
-	.setPlaceholder('https://.....');
+	const newPictureInput = new TextInputBuilder()
+		.setCustomId('newPictureInput')
+		.setLabel('Nouvelle URL:')
+		.setStyle(TextInputStyle.Short)
+		.setRequired(true)
+		.setMaxLength(500)
+		.setPlaceholder('https://.....')
+		.setValue(prev);
 
-const firstActionRow = new ActionRowBuilder().addComponents(newPictureInput);
+	const firstActionRow = new ActionRowBuilder().addComponents(newPictureInput);
+	modal.addComponents(firstActionRow);
 
-characterUpdatePictureModal.addComponents(firstActionRow);
+	return (modal);
+}
 
-module.exports = { characterUpdatePictureModal };
+module.exports = { buildCharacterUpdatePictureModal };

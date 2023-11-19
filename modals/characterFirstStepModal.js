@@ -38,8 +38,8 @@ async function buildCharacterFirstStepModal() {
 	const secondActionRow = new ActionRowBuilder().addComponents(storyInput);
 	const thirdActionRow = new ActionRowBuilder().addComponents(traitsInput);
 	const fourthActionRow = new ActionRowBuilder().addComponents(pictureInput);
-
 	modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow);
+
 	return (modal);
 }
 module.exports = { buildCharacterFirstStepModal };
