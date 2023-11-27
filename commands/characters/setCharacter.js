@@ -57,6 +57,10 @@ module.exports = {
 			await interaction.reply('Choisis un personnage d\'abord gros nullos');
 			return;
 		}
+		if (char.ready == 1) {
+			await interaction.reply('Ce personnage a déjà été validé et ne peut pas être modifié');
+			return;
+		}
 
 		const toSend = await test[choice](char[choice], choice);
 		if (['name', 'story', 'picture', 'traits'].includes(choice)) {

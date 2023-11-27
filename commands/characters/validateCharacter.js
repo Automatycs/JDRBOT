@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { DBUsers, DBCharacters } = require('../../database/createDatabase.js');
 const { buildCharacterIssuesEmbed } = require('../../embeds/characterIssuesEmbed.js');
+const { buildValidateCharacterButton } = require('../../buttons/validateCharacterButton.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,9 +17,16 @@ module.exports = {
 				ephemeral: true,
 			});
 		}
+		if (char.ready == 1) {
+			await interaction.reply({
+				content: 'Ce personnage a déjà été validé et ne peut pas être modifié',
+				ephemeral: true,
+			});
+			return;
+		}
 
 		const errorEmbeb = await buildCharacterIssuesEmbed(char, user);
-
-		interaction.reply({ embeds: [errorEmbeb] });
+		const errorButton = await buildValidateCharacterButton(errorEmbeb.data.color);
+		interaction.reply({ embeds: [errorEmbeb], components: [errorButton] });
 	},
 };

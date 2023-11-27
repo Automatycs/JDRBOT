@@ -13,6 +13,7 @@ module.exports = { client: client };
 require('./events/chatInputEvents');
 require('./events/modalEvents');
 require('./events/selectEvents');
+require('./events/buttonEvents');
 
 /*
 	Récolte des commandes

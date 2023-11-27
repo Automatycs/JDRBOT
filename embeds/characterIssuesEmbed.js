@@ -164,9 +164,11 @@ async function buildCharacterIssuesEmbed(character, user) {
 
 	if (warnings > 2) {
 		summary.value += 'Il y\'a trop de [WARNING] pour pouvoir valider ton personnage (max: 2).\n';
+		characterInfosEmbed.setColor(0x9e0e41);
 	}
 	if (errors != 0) {
 		summary.value += 'Il y\'a trop de [ERROR] pour pouvoir valider ton personnage (max: 0).';
+		characterInfosEmbed.setColor(0x9e0e41);
 	}
 	if (summary.value == '') {
 		summary.value = 'Ton personnage est prêt à être créé!';
