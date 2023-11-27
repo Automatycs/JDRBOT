@@ -9,6 +9,12 @@ async function buildCharacterUpdateSpeciesSelect(prev, type) {
 	const row = new ActionRowBuilder();
 	const species = await DBSpecies.findAll();
 
+	if (type == 'hybrid') {
+		select.addOptions(new StringSelectMenuOptionBuilder()
+			.setLabel('Sans')
+			.setValue('null'),
+		);
+	}
 	for (const specie of species) {
 		const tmp = new StringSelectMenuOptionBuilder()
 			.setLabel(specie.name)

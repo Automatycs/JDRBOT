@@ -59,8 +59,11 @@ client.on(Events.InteractionCreate, async interaction => {
 			where:
 				{ discord_id: interaction.user.id },
 		});
-		const newHybrid = interaction.values[0];
+		let newHybrid = interaction.values[0];
 
+		if (newHybrid == 'null') {
+			newHybrid = null;
+		}
 		await DBCharacters.update(
 			{
 				hybrid: newHybrid,

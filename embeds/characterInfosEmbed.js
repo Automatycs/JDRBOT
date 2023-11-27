@@ -13,6 +13,14 @@ async function createCharacterInfosEmbed(character, user) {
 	if (character.traits != null && character.traits != '') {
 		characterInfosEmbed.addFields({ name: 'Traits / Anecdotes', value: character.traits });
 	}
+	if (character.race != null && character.race != '') {
+		if (character.hybrid != null && character.hybrid != '') {
+			characterInfosEmbed.addFields({ name: 'Races', value: character.race + ' / ' + character.hybrid });
+		}
+		else {
+			characterInfosEmbed.addFields({ name: 'Race', value: character.race });
+		}
+	}
 	if (character.picture != null && character.picture != '') {
 		try {
 			characterInfosEmbed.setImage(character.picture);
