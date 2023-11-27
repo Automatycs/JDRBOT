@@ -5,18 +5,25 @@ async function buildSelectCharacterSelect(characters, user) {
 		.setCustomId('selectCharSelect')
 		.setPlaceholder('Choisis un personnage:');
 	const row = new ActionRowBuilder();
+	let description = '';
 
 	for (const char of characters) {
-		if (char.user_id == user.discord_id) {
-			const tmp = new StringSelectMenuOptionBuilder()
-				.setLabel(char.name)
-				.setValue(char.id.toString());
-			if (char.id == user.current_character) {
-				tmp.setDescription('Actuel');
-			}
-			select.addOptions(tmp);
+		description = '';
+		const tmp = new StringSelectMenuOptionBuilder()
+			.setLabel(char.name)
+			.setValue(char.id.toString());
+		if (char.id == user.current_character) {
+			description += 'Actuel ';
 		}
+		if (char.ready == 1) {
+			description += 'Validé';
+		}
+		if (description != '') {
+			tmp.setDescription(description);
+		}
+		select.addOptions(tmp);
 	}
+
 	row.addComponents(select);
 
 	return (row);
