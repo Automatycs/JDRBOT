@@ -1,21 +1,19 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
-async function buildCheckCharacterSelect(users, characters) {
+async function buildCheckCharacterSelect(user, characters) {
 	const select = new StringSelectMenuBuilder()
 		.setCustomId('checkCharSelect')
 		.setPlaceholder('Choisis un personnage!');
 	const row = new ActionRowBuilder();
 
 	for (const char of characters) {
-		for (const user of users) {
-			if (char.user_id == user.discord_id) {
-				select.addOptions(new StringSelectMenuOptionBuilder()
-					.setLabel(char.name)
-					.setDescription(user.name)
-					.setValue(char.id.toString()),
-				);
-			}
+		const tmp = new StringSelectMenuOptionBuilder()
+			.setLabel(char.name)
+			.setValue(char.id.toString());
+		if (char.ready == 1) {
+			tmp.setDescription('Validé');
 		}
+		select.addOptions(tmp);
 	}
 	row.addComponents(select);
 

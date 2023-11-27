@@ -8,15 +8,27 @@ module.exports = {
 	// data: nom et description de la commande
 	data: new SlashCommandBuilder()
 		.setName('check')
-		.setDescription('Regarde la fiche d\'un personnage'),
+		.setDescription('Regarde la fiche d\'un personnage')
+		.addUserOption(option =>
+			option
+				.setName('joueur')
+				.setDescription('le joueur possédant le personnage à voir')
+				.setRequired(true),
+		),
 	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
 		// Récupération de tout les Users et Characters
-		const users = await DBUsers.findAll();
-		const chars = await DBCharacters.findAll();
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.options.getUser('joueur').id },
+		});
+		const chars = await DBCharacters.findAll({
+			where:
+				{ user_id: user.discord_id },
+		});
 
 		// Création d'un SelectMenu avec les informations données
-		const select = await buildCheckCharacterSelect(users, chars);
+		const select = await buildCheckCharacterSelect(user, chars);
 
 		// Envoi du message contenant le SelectMenu
 		await interaction.reply({
