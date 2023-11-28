@@ -42,7 +42,7 @@ const Users = sequelize.define('users', {
 
 const Species = sequelize.define('species', {
 	name: {
-		type: Sequelize.STRING,
+		type: Sequelize.STRING(50),
 		allowNull: false,
 		unique: true,
 	},
@@ -75,6 +75,14 @@ const Species = sequelize.define('species', {
 });
 
 const Characters = sequelize.define('characters', {
+	user_id: {
+		type: Sequelize.BIGINT,
+		allowNull: false,
+		references: {
+			model: Users,
+			key: 'discord_id',
+		},
+	},
 	ready: {
 		type: Sequelize.BOOLEAN,
 		allowNull: false,
@@ -91,6 +99,22 @@ const Characters = sequelize.define('characters', {
 	traits: {
 		type: Sequelize.STRING(1000),
 		allowNull: true,
+	},
+	race: {
+		type: Sequelize.STRING(50),
+		allowNull: false,
+		references: {
+			model: Species,
+			key: 'name',
+		},
+	},
+	hybrid: {
+		type: Sequelize.STRING(50),
+		allowNull: true,
+		references: {
+			model: Species,
+			key: 'name',
+		},
 	},
 	picture: {
 		type: Sequelize.STRING(500),
@@ -130,6 +154,27 @@ const Characters = sequelize.define('characters', {
 	timestamps: false,
 });
 
+const Skills = sequelize.define('skills', {
+	name: {
+		type: Sequelize.STRING(50),
+		allowNull: false,
+	},
+	description: {
+		type: Sequelize.STRING(200),
+		allowNull: false,
+	},
+	user_id: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		references: {
+			model: Characters,
+			key: 'id',
+		},
+	},
+}, {
+	timestamps: false,
+});
+
 Users.hasMany(Characters, {
 	foreignKey: 'user_id',
 	sourceKey: 'discord_id',
@@ -150,7 +195,7 @@ Characters.belongsTo(Users, {
 Species.hasMany(Characters, {
 	foreignKey: 'race',
 	sourceKey: 'name',
-	type: Sequelize.STRING,
+	type: Sequelize.STRING(50),
 	allowNull: false,
 	onDelete: 'CASCADE',
 	onUpdate: 'CASCADE',
@@ -158,7 +203,7 @@ Species.hasMany(Characters, {
 Characters.belongsTo(Species, {
 	foreignKey: 'race',
 	targetKey: 'name',
-	type: Sequelize.STRING,
+	type: Sequelize.STRING(50),
 	allowNull: false,
 	onDelete: 'CASCADE',
 	onUpdate: 'CASCADE',
@@ -167,7 +212,7 @@ Characters.belongsTo(Species, {
 Species.hasMany(Characters, {
 	foreignKey: 'hybrid',
 	sourceKey: 'name',
-	type: Sequelize.STRING,
+	type: Sequelize.STRING(50),
 	allowNull: false,
 	onDelete: 'CASCADE',
 	onUpdate: 'CASCADE',
@@ -175,7 +220,24 @@ Species.hasMany(Characters, {
 Characters.belongsTo(Species, {
 	foreignKey: 'hybrid',
 	targetKey: 'name',
-	type: Sequelize.STRING,
+	type: Sequelize.STRING(50),
+	allowNull: false,
+	onDelete: 'CASCADE',
+	onUpdate: 'CASCADE',
+});
+
+Characters.hasMany(Skills, {
+	foreignKey: 'user_id',
+	sourceKey: 'id',
+	type: Sequelize.INTEGER,
+	allowNull: false,
+	onDelete: 'CASCADE',
+	onUpdate: 'CASCADE',
+});
+Skills.belongsTo(Characters, {
+	foreignKey: 'user_id',
+	targetKey: 'id',
+	type: Sequelize.INTEGER,
 	allowNull: false,
 	onDelete: 'CASCADE',
 	onUpdate: 'CASCADE',
@@ -185,4 +247,5 @@ module.exports = {
 	DBUsers: Users,
 	DBCharacters: Characters,
 	DBSpecies: Species,
+	DBSkills: Skills,
 };
