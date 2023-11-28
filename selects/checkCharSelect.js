@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
-async function buildCheckCharacterSelect(user, characters) {
+async function buildCheckCharacterSelect(characters) {
 	const select = new StringSelectMenuBuilder()
 		.setCustomId('checkCharSelect')
 		.setPlaceholder('Choisis un personnage!');

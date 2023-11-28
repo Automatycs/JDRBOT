@@ -5,10 +5,10 @@ const { buildCheckCharacterSelect } = require('../../selects/checkCharSelect.js'
 
 // Exports de composants
 module.exports = {
-	// data: nom et description de la commande
+	// data: nom, description et définition des options de la commande
 	data: new SlashCommandBuilder()
 		.setName('check')
-		.setDescription('Regarde la fiche d\'un personnage')
+		.setDescription('Regarder la fiche d\'un personnage')
 		.addUserOption(option =>
 			option
 				.setName('joueur')
@@ -17,22 +17,30 @@ module.exports = {
 		),
 	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
-		// Récupération de tout les Users et Characters
+		// Récupération de l'User donné par la commande et ses Characters
 		const user = await DBUsers.findOne({
 			where:
 				{ discord_id: interaction.options.getUser('joueur').id },
 		});
-		const chars = await DBCharacters.findAll({
+		const characters = await DBCharacters.findAll({
 			where:
 				{ user_id: user.discord_id },
 		});
 
+		// Gestion d'erreur dans le cas où l'User ne possède aucun Characters
+		if (characters.length == 0) {
+			return await interaction.reply({
+				content: 'Action impossible: ' + user.name + ' n\'a pas de personnages.',
+				ephemeral: true,
+			});
+		}
+
 		// Création d'un SelectMenu avec les informations données
-		const select = await buildCheckCharacterSelect(user, chars);
+		const select = await buildCheckCharacterSelect(characters);
 
 		// Envoi du message contenant le SelectMenu
-		await interaction.reply({
-			content: 'Je regarde:',
+		return await interaction.reply({
+			content: 'Vous regardez:',
 			components: [select],
 			ephemeral: true,
 		});

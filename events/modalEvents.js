@@ -1,10 +1,18 @@
+// Imports de composants
 const { Events } = require('discord.js');
 const { client } = require('../index.js');
 const { DBUsers, DBCharacters } = require('../database/createDatabase.js');
 
+// Création d'un détecteur d'intéraction
 client.on(Events.InteractionCreate, async interaction => {
+	// Si l'intéraction n'est pas une intéraction lié au Modal, on empêche toutes actions
 	if (!interaction.isModalSubmit()) return;
 
+	/*
+	* Cas: 		characterFirstStepModal
+    * Source: 	characterFirstStepModal.js
+	* Méthode:	buildCharacterFirstStepModal()
+	*/
 	if (interaction.customId === 'characterFirstStepModal') {
 		const charName = interaction.fields.getTextInputValue('nameInput');
 		const charStory = interaction.fields.getTextInputValue('storyInput');

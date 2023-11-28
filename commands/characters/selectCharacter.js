@@ -19,16 +19,24 @@ module.exports = {
 			where:
 				{ discord_id: userDiscordId },
 		});
-		const chars = await DBCharacters.findAll({
+		const characters = await DBCharacters.findAll({
 			where:
 				{ user_id: userDiscordId },
 		});
 
+		// Gestion d'erreur dans le cas où l'User ne possède aucun Characters
+		if (characters.length() == 0) {
+			return await interaction.reply({
+				content: 'Action impossible: Vous n\'avez pas de personnages.',
+				ephemeral: true,
+			});
+		}
+
 		// Création d'un SelectMenu avec les informations données
-		const select = await buildSelectCharacterSelect(chars, user);
+		const select = await buildSelectCharacterSelect(characters, user);
 
 		// Envoi du message contenant le SelectMenu
-		await interaction.reply({
+		return await interaction.reply({
 			components: [select],
 			ephemeral: true,
 		});

@@ -8,7 +8,8 @@ const { buildCharacterUpdateTraitsModal } = require('../../modals/characterUpdat
 const { buildCharacterUpdateStatsSelect } = require('../../selects/characterUpdateStatsSelect.js');
 const { buildCharacterUpdateSpeciesSelect } = require('../../selects/characterUpdateSpeciesSelect.js');
 
-const test = {
+// Création d'un tableau de fonctions
+const actionList = {
 	name: buildCharacterUpdateNameModal,
 	story: buildCharacterUpdateStoryModal,
 	traits: buildCharacterUpdateTraitsModal,
@@ -25,13 +26,13 @@ const test = {
 
 // Exports de composants
 module.exports = {
-	data: new SlashCommandBuilder()
 	// data: nom, description et options de la commande
+	data: new SlashCommandBuilder()
 		.setName('set')
-		.setDescription('Changer un aspect de ton personnage')
+		.setDescription('Changer un aspect de votre personnage')
 		.addStringOption(option =>
 			option.setName('choice')
-				.setDescription('Ce que tu veux modifier')
+				.setDescription('Ce que vous voulez modifier')
 				.setRequired(true)
 				.addChoices(
 					{ name: 'Nom', value: 'name' },
@@ -49,25 +50,42 @@ module.exports = {
 				)),
 	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
-		const user = await DBUsers.findOne({ where: { discord_id: interaction.user.id } });
-		const char = await DBCharacters.findOne({ where: { id: user.current_character } });
+		// Récupération des informations sur l'utilisateur ayant appelé la commande
+		const userDiscordId = interaction.user.id;
 		const choice = interaction.options.getString('choice');
 
-		if (char == null || char.length < 1) {
-			await interaction.reply('Choisis un personnage d\'abord gros nullos');
-			return;
+		// Récupération d'un User et de son Character actuel
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: userDiscordId },
+		});
+		const chararacter = await DBCharacters.findOne({
+			where:
+				{ id: user.current_character },
+		});
+
+		// Gestion d'erreur dans le cas où l'utilisateur n\'a pas de personnage sélectionné
+		if (chararacter == null || chararacter.length < 1) {
+			return await interaction.reply({
+				content: 'Action impossible: Vous devez d\'abord choisir un personnage',
+				ephemeral: true,
+			});
 		}
-		if (char.ready == 1) {
-			await interaction.reply('Ce personnage a déjà été validé et ne peut pas être modifié');
-			return;
+		// Gestion d'erreur dans le cas où le personnage a été validé avant
+		if (chararacter.ready == 1) {
+			return await interaction.reply({
+				content: 'Action impossible: Ce personnage a déjà été validé et ne peut pas être modifié',
+				ephemeral: true,
+			});
 		}
 
-		const toSend = await test[choice](char[choice], choice);
+		// Création et envoie d'un Select ou d'un Modal en fonction du choix de l'utilisateur
+		const toSend = await actionList[choice](chararacter[choice], choice);
 		if (['name', 'story', 'picture', 'traits'].includes(choice)) {
-			await interaction.showModal(toSend);
+			return await interaction.showModal(toSend);
 		}
 		else {
-			await interaction.reply({
+			return await interaction.reply({
 				components: [toSend],
 				ephemeral: true,
 			});
