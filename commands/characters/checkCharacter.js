@@ -17,11 +17,21 @@ module.exports = {
 		),
 	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
-		// Récupération de l'User donné par la commande et ses Characters
+		// Récupération de l'User donné par la commande
 		const user = await DBUsers.findOne({
 			where:
 				{ discord_id: interaction.options.getUser('joueur').id },
 		});
+
+		// Gestion d'erreur dans le cas où l'User donné n'est pas enregistré$
+		if (user == null) {
+			return await interaction.reply({
+				content: 'Action impossible: cette personne n\'est pas enregistrée.',
+				ephemeral: true,
+			});
+		}
+
+		// Récupération des Characters de l'User
 		const characters = await DBCharacters.findAll({
 			where:
 				{ user_id: user.discord_id },

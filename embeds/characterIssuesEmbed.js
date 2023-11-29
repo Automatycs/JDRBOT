@@ -108,6 +108,27 @@ async function statsIssues(stats, race, hybrid) {
 		return ({ newField: issue, error: error });
 	}
 
+	if (stats.indexOf(1) != stats.lastIndexOf(1) || stats.indexOf(1) == -1) {
+		issue.value = '[ERROR] Les statistique de ton personnages ne suivent pas la règle de distribution.';
+		error += 1;
+		return ({ newField: issue, error: error });
+	}
+	if (stats.indexOf(2) == stats.lastIndexOf(2) || stats.indexOf(2) == -1) {
+		issue.value = '[ERROR] Les statistique de ton personnages ne suivent pas la règle de distribution.';
+		error += 1;
+		return ({ newField: issue, error: error });
+	}
+	if (stats.indexOf(3) == stats.lastIndexOf(3) || stats.indexOf(3) == -1) {
+		issue.value = '[ERROR] Les statistique de ton personnages ne suivent pas la règle de distribution.';
+		error += 1;
+		return ({ newField: issue, error: error });
+	}
+	if (stats.indexOf(4) != stats.lastIndexOf(4) || stats.indexOf(4) == -1) {
+		issue.value = '[ERROR] Les statistique de ton personnages ne suivent pas la règle de distribution.';
+		error += 1;
+		return ({ newField: issue, error: error });
+	}
+
 	if (race != undefined) {
 		const tmp = await DBSpecies.findOne({ where: { name: race } });
 		raceStats = [tmp.mod_phy, tmp.mod_dex, tmp.mod_eso, tmp.mod_int, tmp.mod_cha, tmp.mod_sur];

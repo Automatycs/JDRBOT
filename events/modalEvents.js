@@ -30,7 +30,8 @@ client.on(Events.InteractionCreate, async interaction => {
 
 			await DBUsers.update({ current_character: char.id }, { where: { discord_id: interaction.user.id } });
 		}
-		catch {
+		catch (e) {
+			console.log(e);
 			return interaction.reply('Il y a eu un problème pendant la création du personnage');
 		}
 
@@ -128,6 +129,70 @@ client.on(Events.InteractionCreate, async interaction => {
 		);
 		return await interaction.reply({
 			content: 'Les traits de ton personnage ont été mis à jour!',
+			ephemeral: true,
+		});
+	}
+
+
+	if (interaction.customId === 'characterUpdateStatsFightModal') {
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.user.id },
+		});
+
+		let newPhy = interaction.fields.getTextInputValue('newPhyInput');
+		let newDex = interaction.fields.getTextInputValue('newDexInput');
+		let newEso = interaction.fields.getTextInputValue('newEsoInput');
+
+		newPhy = isNaN(newPhy) ? '0' : newPhy;
+		newDex = isNaN(newDex) ? '0' : newDex;
+		newEso = isNaN(newEso) ? '0' : newEso;
+
+		await DBCharacters.update(
+			{
+				phy: newPhy,
+				dex: newDex,
+				eso: newEso,
+			},
+			{
+				where:
+					{ id: user.current_character },
+			},
+		);
+		return await interaction.reply({
+			content: 'Les statistiques physique de ton personnage ont été mis à jour!',
+			ephemeral: true,
+		});
+	}
+
+
+	if (interaction.customId === 'characterUpdateStatsMentalModal') {
+		const user = await DBUsers.findOne({
+			where:
+				{ discord_id: interaction.user.id },
+		});
+
+		let newInt = interaction.fields.getTextInputValue('newIntInput');
+		let newCha = interaction.fields.getTextInputValue('newChaInput');
+		let newSur = interaction.fields.getTextInputValue('newSurInput');
+
+		newInt = isNaN(newInt) ? '0' : newInt;
+		newCha = isNaN(newCha) ? '0' : newCha;
+		newSur = isNaN(newSur) ? '0' : newSur;
+
+		await DBCharacters.update(
+			{
+				int: newInt,
+				cha: newCha,
+				sur: newSur,
+			},
+			{
+				where:
+					{ id: user.current_character },
+			},
+		);
+		return await interaction.reply({
+			content: 'Les statistiques mentales de ton personnage ont été mis à jour!',
 			ephemeral: true,
 		});
 	}

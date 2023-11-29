@@ -102,7 +102,7 @@ const Characters = sequelize.define('characters', {
 	},
 	race: {
 		type: Sequelize.STRING(50),
-		allowNull: false,
+		allowNull: true,
 		references: {
 			model: Species,
 			key: 'name',

@@ -7,7 +7,7 @@ const { DBCharacters } = require('../../database/createDatabase.js');
 module.exports = {
 	// data: nom et description de la commande
 	data: new SlashCommandBuilder()
-		.setName('create')
+		.setName('create-character')
 		.setDescription('Lancer la création d\'un personnage'),
 	// execute(): méthode éxécutée quand la commande est appelée
 	async execute(interaction) {
@@ -21,7 +21,7 @@ module.exports = {
 		});
 
 		// Gestion d'erreur dans le cas où l'utilisateur possède déjà 25 Characters ou plus
-		if (characters.length() >= 25) {
+		if (characters.length >= 25) {
 			return await interaction.reply({
 				content: 'Action impossible: Vous avez trop de personnages.',
 				ephemeral: true,

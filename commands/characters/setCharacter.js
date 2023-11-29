@@ -5,8 +5,9 @@ const { buildCharacterUpdateNameModal } = require('../../modals/characterUpdateN
 const { buildCharacterUpdatePictureModal } = require('../../modals/characterUpdatePictureModal.js');
 const { buildCharacterUpdateStoryModal } = require('../../modals/characterUpdateStoryModal.js');
 const { buildCharacterUpdateTraitsModal } = require('../../modals/characterUpdateTraitsModal.js');
-const { buildCharacterUpdateStatsSelect } = require('../../selects/characterUpdateStatsSelect.js');
 const { buildCharacterUpdateSpeciesSelect } = require('../../selects/characterUpdateSpeciesSelect.js');
+const { buildCharacterUpdateStatsFightModal } = require('../../modals/characterUpdateStatsFightModal.js');
+const { buildCharacterUpdateStatsMentalModal } = require('../../modals/characterUpdateStatsMentalModal.js');
 
 // Création d'un tableau de fonctions
 const actionList = {
@@ -14,12 +15,6 @@ const actionList = {
 	story: buildCharacterUpdateStoryModal,
 	traits: buildCharacterUpdateTraitsModal,
 	picture: buildCharacterUpdatePictureModal,
-	phy: buildCharacterUpdateStatsSelect,
-	dex: buildCharacterUpdateStatsSelect,
-	eso: buildCharacterUpdateStatsSelect,
-	int: buildCharacterUpdateStatsSelect,
-	cha: buildCharacterUpdateStatsSelect,
-	sur: buildCharacterUpdateStatsSelect,
 	race: buildCharacterUpdateSpeciesSelect,
 	hybrid: buildCharacterUpdateSpeciesSelect,
 };
@@ -39,12 +34,8 @@ module.exports = {
 					{ name: 'Histoire', value: 'story' },
 					{ name: 'Traits', value: 'traits' },
 					{ name: 'Image', value: 'picture' },
-					{ name: 'Physique', value: 'phy' },
-					{ name: 'Dextérité', value: 'dex' },
-					{ name: 'Esotérisme', value: 'eso' },
-					{ name: 'Intelligence', value: 'int' },
-					{ name: 'Charisme', value: 'cha' },
-					{ name: 'Survivalisme', value: 'sur' },
+					{ name: 'Statistiques de Combat', value: 'statsFight' },
+					{ name: 'Statistiques de Mental', value: 'statsMental' },
 					{ name: 'Race', value: 'race' },
 					{ name: 'Race Hybride', value: 'hybrid' },
 				)),
@@ -79,16 +70,27 @@ module.exports = {
 			});
 		}
 
-		// Création et envoie d'un Select ou d'un Modal en fonction du choix de l'utilisateur
-		const toSend = await actionList[choice](chararacter[choice], choice);
-		if (['name', 'story', 'picture', 'traits'].includes(choice)) {
-			return await interaction.showModal(toSend);
+		// Création d'un Select ou d'un Modal en fonction du choix de l'utilisateur
+		let toSend;
+		if (choice == 'statsFight') {
+			toSend = await buildCharacterUpdateStatsFightModal(chararacter.phy, chararacter.dex, chararacter.eso);
+		}
+		else if (choice == 'statsMental') {
+			toSend = await buildCharacterUpdateStatsMentalModal(chararacter.int, chararacter.cha, chararacter.sur);
 		}
 		else {
+			toSend = await actionList[choice](chararacter[choice], choice);
+		}
+
+		// Envoie de toSend à l'utilisateur
+		if (['race', 'hybrid'].includes(choice)) {
 			return await interaction.reply({
 				components: [toSend],
 				ephemeral: true,
 			});
+		}
+		else {
+			return await interaction.showModal(toSend);
 		}
 	},
 };

@@ -25,7 +25,7 @@ module.exports = {
 		});
 
 		// Gestion d'erreur dans le cas où l'User ne possède aucun Characters
-		if (characters.length() == 0) {
+		if (characters.length == 0) {
 			return await interaction.reply({
 				content: 'Action impossible: Vous n\'avez pas de personnages.',
 				ephemeral: true,

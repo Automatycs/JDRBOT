@@ -48,6 +48,7 @@ module.exports = {
 		return await interaction.reply({
 			embeds: [errorEmbeb],
 			components: [errorButton],
+			ephemeral: true,
 		});
 	},
 };
