@@ -29,3 +29,8 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Publish
+        run: npm publish
+        env:
+          NODE_AUT_TOKEN: ${{ secrets.NPM_TOKEN }}
