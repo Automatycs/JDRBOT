@@ -1,0 +1,10 @@
+{
+    "token": "",
+    "clientId": "",
+	"guildId": "",
+    "dbname": "",
+    "dbuser": "",
+    "dbpassword": "",
+    "dbhost": "",
+    "dbport": ""
+}
