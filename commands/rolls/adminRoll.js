@@ -54,5 +54,9 @@ module.exports = {
 			where:
 				{ id: user.current_character },
 		});
+
+		console.log(charac);
+		console.log(chararacter);
+		console.log(level);
 	},
 };
