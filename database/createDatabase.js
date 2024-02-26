@@ -150,6 +150,16 @@ const Characters = sequelize.define('characters', {
 		allowNull: false,
 		defaultValue: 0,
 	},
+	favor: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0,
+	},
+	destiny: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0,
+	},
 }, {
 	timestamps: false,
 });

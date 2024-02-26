@@ -8,4 +8,6 @@ const { fillSpecies } = require('./database/addSpecies.js');
 	await DBSkills.sync();
 
 	await fillSpecies();
+	console.log('DB is ready to play');
+	return;
 })();

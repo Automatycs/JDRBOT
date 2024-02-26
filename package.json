@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "discord.js": "^14.13.0",
     "mysql2": "^3.6.2",
     "pagination.djs": "^4.0.12",
+    "random": "^4.1.0",
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6"
   },
