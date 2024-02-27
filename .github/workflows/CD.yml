@@ -1,7 +1,7 @@
 name: CD Publish
 on:
   release:
-    types: [released]
+    types: [created]
 jobs:
   build:
     runs-on: ubuntu-latest
